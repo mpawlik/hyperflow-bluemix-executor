@@ -1,0 +1,8 @@
+var config = {
+    endpoint: '<endpoint_url>',
+    apiKeyId: '<api_key_id>',
+    ibmAuthEndpoint: 'https://iam.ng.bluemix.net/oidc/token',
+    serviceInstanceId: '<service_instance_id>',
+};
+
+exports.config = config;
