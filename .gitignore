@@ -62,3 +62,6 @@ typings/
 
 # serverless
 .serverless/
+
+# specific to this package
+config.js
