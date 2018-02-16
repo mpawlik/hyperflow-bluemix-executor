@@ -28,6 +28,7 @@ package:
 #    - include-me-dir/**
   exclude:
     - .idea/**
+    - config.js.example
 
 functions:
   executor:

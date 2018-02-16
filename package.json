@@ -1,4 +1,8 @@
 {
   "name": "openwhisk-nodejs",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "async": "^2.6.0",
+    "ibm-cos-sdk": "^1.1.2"
+  }
 }
