@@ -7,6 +7,8 @@ var AWS = require('ibm-cos-sdk');
 
 var config = require('./config').config;
 
+var initialized = false;
+
 var s3 = new AWS.S3(config);
 
 function executor(params) {
@@ -74,32 +76,36 @@ function executor(params) {
 
         //TODO: this needs to be done only once
         function make_executable(callback) {
-            var proc_name = __dirname + '/' + executable;
+            if (initialized) {
+                callback();
+            } else {
+                var proc_name = __dirname + '/' + executable;
 
-            console.log('Adding +x for ' + proc_name);
-            var proc = spawn('chmod', ['+x', proc_name]);
+                console.log('Adding +x for ' + proc_name);
+                var proc = spawn('chmod', ['+x', proc_name]);
 
-            proc.on('error', function (code) {
-                console.error('chmod error!!' + executable + JSON.stringify(code));
-            });
+                proc.on('error', function (code) {
+                    console.error('chmod error!!' + executable + JSON.stringify(code));
+                });
 
-            proc.stdout.on('data', function (exedata) {
-                console.log('chmod stdout: ' + executable + exedata);
-            });
+                proc.stdout.on('data', function (exedata) {
+                    console.log('chmod stdout: ' + executable + exedata);
+                });
 
-            proc.stderr.on('data', function (exedata) {
-                console.log('chmod stderr: ' + executable + exedata);
-            });
+                proc.stderr.on('data', function (exedata) {
+                    console.log('chmod stderr: ' + executable + exedata);
+                });
 
-            proc.on('close', function (code) {
-                console.log('chmod close' + executable);
-                callback()
-            });
+                proc.on('close', function (code) {
+                    console.log('chmod close' + executable);
+                    initialized = true;
+                    callback()
+                });
 
-            proc.on('exit', function (code) {
-                console.log('chmod exit' + executable);
-            });
-
+                proc.on('exit', function (code) {
+                    console.log('chmod exit' + executable);
+                });
+            }
         }
 
         function execute(callback) {
