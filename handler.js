@@ -21,7 +21,6 @@ function executor(params) {
         var inputs = body.inputs;
         var outputs = body.outputs;
         var bucket_name = body.options.bucket;
-        var prefix = body.options.prefix;
 
         var t_start = Date.now();
         var t_end;
@@ -32,18 +31,17 @@ function executor(params) {
         // console.log('inputs[0].name:     ' + inputs[0].name);
         console.log('outputs:    ' + outputs);
         console.log('bucket:     ' + bucket_name);
-        console.log('prefix:     ' + prefix);
 
 
         function download(callback) {
             async.each(inputs, function (file, callback) {
 
                 var file_name = file.name;
-                console.log('downloading ' + bucket_name + "/" + prefix + "/" + file_name);
+                console.log('downloading ' + bucket_name + "/" + file_name);
 
                 var params = {
                     Bucket: bucket_name,
-                    Key: prefix + "/" + file_name
+                    Key: file_name
                 };
 
                 s3.getObject(params, function (err, data) {
@@ -109,7 +107,7 @@ function executor(params) {
             async.each(outputs, function (file, callback) {
 
                 var file_name = file.name;
-                console.log('uploading ' + bucket_name + "/" + prefix + "/" + file_name);
+                console.log('uploading ' + bucket_name + "/" + file_name);
 
                 fs.readFile('/tmp/' + file_name, function (err, data) {
                     if (err) {
@@ -121,7 +119,7 @@ function executor(params) {
 
                     var params = {
                         Bucket: bucket_name,
-                        Key: prefix + "/" + file_name,
+                        Key: file_name,
                         Body: data
                     };
 
