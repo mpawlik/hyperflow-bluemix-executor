@@ -203,7 +203,7 @@ function executor(params) {
                     statusCode: 200,
                     headers: {'Content-Type': 'application/json'},
                     body: new Buffer(JSON.stringify({
-                        message: 'AWS Lambda exit: start ' + t_start + ' end ' + t_end + ' duration ' + duration + ' ms, executable: ' + executable + ' args: ' + args
+                        message: 'IBM openwhisk exit: start ' + t_start + ' end ' + t_end + ' duration ' + duration + ' ms, executable: ' + executable + ' args: ' + args
                     })).toString('base64')
                 };
 

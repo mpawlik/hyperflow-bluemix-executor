@@ -34,8 +34,10 @@ functions:
   executor:
     handler: handler.executor
     events:
-      - http: GET /executor
-      - http: POST /executor
+      - http:
+          method: POST
+          path: /executor
+          resp: http
 
 #    Functions can be defined using sequences rather than referring 
 #    to a handler.
