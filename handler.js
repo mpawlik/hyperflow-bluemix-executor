@@ -14,7 +14,7 @@ function executor(params) {
 
         // console.log(event);
 
-        var body = JSON.parse(params);
+        var body = params;
 
         var executable = body.executable;
         var args = body.args;
@@ -29,7 +29,7 @@ function executor(params) {
         console.log('executable: ' + executable);
         console.log('args:       ' + args);
         console.log('inputs:     ' + inputs);
-        console.log('inputs[0].name:     ' + inputs[0].name);
+        // console.log('inputs[0].name:     ' + inputs[0].name);
         console.log('outputs:    ' + outputs);
         console.log('bucket:     ' + bucket_name);
         console.log('prefix:     ' + prefix);
