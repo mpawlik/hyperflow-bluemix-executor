@@ -72,12 +72,41 @@ function executor(params) {
             });
         }
 
+        //TODO: this needs to be done only once
+        function make_executable(callback) {
+            var proc_name = __dirname + '/' + executable;
+
+            console.log('Adding +x for ' + proc_name);
+            var proc = spawn('chmod', ['+x', proc_name]);
+
+            proc.on('error', function (code) {
+                console.error('chmod error!!' + executable + JSON.stringify(code));
+            });
+
+            proc.stdout.on('data', function (exedata) {
+                console.log('chmod stdout: ' + executable + exedata);
+            });
+
+            proc.stderr.on('data', function (exedata) {
+                console.log('chmod stderr: ' + executable + exedata);
+            });
+
+            proc.on('close', function (code) {
+                console.log('chmod close' + executable);
+                callback()
+            });
+
+            proc.on('exit', function (code) {
+                console.log('chmod exit' + executable);
+            });
+
+        }
 
         function execute(callback) {
             var proc_name = __dirname + '/' + executable;
 
             console.log('spawning ' + proc_name);
-            process.env.PATH = '.:' + __dirname; // add . and __dirname to PATH since e.g. in Montage mDiffFit calls external executables
+            process.env.PATH = '.:' + __dirname + ":" + process.env.PATH; // add . and __dirname to PATH since e.g. in Montage mDiffFit calls external executables
             var proc = spawn(proc_name, args, {cwd: '/tmp'});
 
             proc.on('error', function (code) {
@@ -150,6 +179,7 @@ function executor(params) {
 
         async.waterfall([
             download,
+            make_executable,
             execute,
             upload
         ], function (err, result) {
